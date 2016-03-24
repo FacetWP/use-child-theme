@@ -2,9 +2,13 @@
 This drop-in helps ensure that customers are using a child theme. Child themes allow users to upgrade your theme without losing any customizations.
 
 ## How it works
-This drop-in checks whether the current theme is a child. If not, it then checks to see if a child theme exists.
 
-If a child theme doesn't exist, it creates one. Finally, it'll notify users to switch to the child theme.
+```
+- Is this a child theme?
+    - No
+        - If child theme doesn't exist, create it
+        - Nag users to switch to child theme
+```
 
 ## How to use it
 

@@ -29,12 +29,28 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
     class Use_Child_Theme
     {
         function __construct() {
-            add_action( 'init', array( $this, 'init' ) );
+            add_action( 'admin_init', array( $this, 'admin_init' ) );
         }
 
 
-        function init() {
+        function admin_init() {
             $theme = wp_get_theme();
+            echo '<pre>';var_dump( $theme );echo '</pre>';die();
+        }
+
+
+        function activate_child_theme() {
+
+        }
+
+
+        function is_theme_writable() {
+            
+        }
+
+
+        function install_child_theme() {
+
         }
     }
 

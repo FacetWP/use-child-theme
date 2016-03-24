@@ -78,8 +78,16 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
          * Activate child theme
          */
         function activate_child_theme() {
-            $slug = basename( $this->child_theme->get_stylesheet_directory() );
-            switch_theme( $slug );
+            $child_slug = basename( $this->child_theme->get_stylesheet_directory() );
+            switch_theme( $child_slug );
+
+            // Copy customizer settings, widgets, etc.
+            $settings = get_option( 'theme_mods_' . $child_slug );
+            if ( ! $settings ) {
+                $parent_slug = basename( $this->theme->get_stylesheet_directory() );
+                $parent_settings = get_option( 'theme_mods_' . $parent_slug );
+                update_option( 'theme_mods_' . $child_slug, $parent_settings );
+            }
         }
 
 

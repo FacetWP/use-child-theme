@@ -4,10 +4,9 @@ This drop-in helps ensure that customers are using a child theme. Child themes a
 ## How it works
 
 ```
-- Is this a child theme?
-    - No
-        - If child theme doesn't exist, create it
-        - Nag users to switch to child theme
+- If current theme is NOT a child theme:
+    - If child theme doesn't exist, create it
+    - Alert users to switch to child theme
 ```
 
 ## How to use it

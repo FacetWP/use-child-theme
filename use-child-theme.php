@@ -31,6 +31,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
         public $theme;
         public $child_theme;
+        public $show_notice = false;
 
 
         function __construct() {
@@ -39,6 +40,13 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
 
         function admin_init() {
+            if ( ! current_user_can( 'manage_options' ) ) {
+                return;
+            }
+
+            add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+            add_action( 'wp_ajax_uct_activate', array( $this, 'activate_child_theme' ) );
+
             $this->theme = wp_get_theme();
 
             // Exit if this is a child theme
@@ -47,11 +55,36 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             }
             // Does the child theme exist?
             elseif ( $this->has_child_theme() ) {
-                var_dump( 'USE THE CHILD THEME!' );
+                $this->show_notice = true;
             }
             // Create a child theme
             else {
                 $this->install_child_theme();
+            }
+        }
+
+
+        function admin_notices() {
+            if ( $this->show_notice ) {
+?>
+        <script>
+        (function($) {
+            $(function() {
+                $(document).on('click', '.uct-activate', function() {
+                    $.post(ajaxurl, {
+                        action: 'uct_activate'
+                    }, function(response) {
+                        $('.uct-activate').closest('p').html(response);
+                    });
+                });
+            });
+        })(jQuery);
+        </script>
+
+        <div class="notice notice-error is-dismissible">
+            <p>Please use the <?php echo $this->theme->get( 'Name' ); ?> child theme <a class="uct-activate" href="javascript:;">Activate now &raquo;</a></p>
+        </div>
+<?php
             }
         }
 
@@ -88,6 +121,8 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 $parent_settings = get_option( 'theme_mods_' . $parent_slug );
                 update_option( 'theme_mods_' . $child_slug, $parent_settings );
             }
+
+            wp_die( 'All done!' );
         }
 
 
@@ -112,6 +147,13 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             if ( wp_mkdir_p( $dir ) ) {
                 file_put_contents( $dir . '/style.css', $css );
                 file_put_contents( $dir . '/functions.php', $this->functions_php() );
+
+                if ( is_readable( $this->theme->get_stylesheet_directory() . '/screenshot.png' ) ) {
+                    copy(
+                        $this->theme->get_stylesheet_directory() . '/screenshot.png',
+                        $dir . '/screenshot.png'
+                    );
+                }
             }
         }
 

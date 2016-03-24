@@ -1,6 +1,8 @@
 # use-child-theme.php
 This drop-in helps ensure that customers are using a child theme. Child themes allow users to upgrade your theme without losing any customizations.
 
+<img src="http://i.imgur.com/dvLchUj.png" width="508" height="167" />
+
 ## How it works
 
 ```

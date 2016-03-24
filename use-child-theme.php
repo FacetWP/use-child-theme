@@ -1,26 +1,9 @@
 <?php
 /*
-Plugin Name: Use Child Theme
-Plugin URI: https://facetwp.com/
-Description: Encourage use of child themes
-Version: 0.1
-Author: Matt Gibbs
-
-Copyright 2016 Matt Gibbs
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, see <http://www.gnu.org/licenses/>.
-*/
+ * Use Child Theme
+ * A drop-in to make it easy to use WordPress child themes
+ * @version 0.2
+ */
 
 defined( 'ABSPATH' ) or exit;
 
@@ -39,8 +22,13 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
         }
 
 
+        /**
+         * Get the wheels turning
+         */
         function admin_init() {
-            if ( ! current_user_can( 'manage_options' ) ) {
+
+            // Exit if unauthorized
+            if ( ! current_user_can( 'switch_themes' ) ) {
                 return;
             }
 
@@ -49,21 +37,24 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
             $this->theme = wp_get_theme();
 
-            // Exit if this is a child theme
+            // Exit if child theme
             if ( false !== $this->theme->parent() ) {
                 return;
             }
-            // Does the child theme exist?
+            // Does child theme exist?
             elseif ( $this->has_child_theme() ) {
                 $this->show_notice = true;
             }
-            // Create a child theme
+            // Create child theme
             else {
                 $this->install_child_theme();
             }
         }
 
 
+        /**
+         * Show admin notices
+         */
         function admin_notices() {
             if ( $this->show_notice ) {
 ?>
@@ -116,7 +107,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
             // Copy customizer settings, widgets, etc.
             $settings = get_option( 'theme_mods_' . $child_slug );
-            if ( ! $settings ) {
+            if ( false === $settings ) {
                 $parent_slug = basename( $this->theme->get_stylesheet_directory() );
                 $parent_settings = get_option( 'theme_mods_' . $parent_slug );
                 update_option( 'theme_mods_' . $child_slug, $parent_settings );
@@ -149,8 +140,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 file_put_contents( $dir . '/functions.php', $this->functions_php() );
 
                 if ( is_readable( $this->theme->get_stylesheet_directory() . '/screenshot.png' ) ) {
-                    copy(
-                        $this->theme->get_stylesheet_directory() . '/screenshot.png',
+                    copy( $this->theme->get_stylesheet_directory() . '/screenshot.png',
                         $dir . '/screenshot.png'
                     );
                 }

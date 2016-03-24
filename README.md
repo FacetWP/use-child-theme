@@ -5,11 +5,10 @@ This drop-in helps ensure that customers are using a child theme. Child themes a
 
 ## How it works
 
-```
-- If current theme is NOT a child theme:
-    - If child theme doesn't exist, create it
-    - Alert users to switch to child theme
-```
+_If a child theme isn't active..._
+* It creates a child theme if one doesn't exist already
+* It notifies users to activate the child theme (including a 1-click **Activate** button)
+* It copies the parent theme's settings to the child theme (if needed)
 
 ## How to use it
 

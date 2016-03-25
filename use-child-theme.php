@@ -121,20 +121,8 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             $parent_dir = $this->theme->get_stylesheet_directory();
             $child_dir = $parent_dir . '-child';
 
-            $replacements = array(
-                'theme_name' => $this->theme->get( 'Name' ) . ' Child',
-                'theme_uri' => $this->theme->get( 'ThemeURI' ),
-                'template' => $this->theme->get_stylesheet(),
-                'version' => '1.0',
-            );
-
-            $css = $this->style_css();
-            foreach ( $replacements as $key => $str ) {
-                $css = str_replace( '{' . $key . '}', $str, $css );
-            }
-
             if ( wp_mkdir_p( $child_dir ) ) {
-                file_put_contents( $child_dir . '/style.css', $css );
+                file_put_contents( $child_dir . '/style.css', $this->style_css() );
                 file_put_contents( $child_dir . '/functions.php', $this->functions_php() );
 
                 if ( false !== ( $img = $this->theme->get_screenshot( 'relative' ) ) ) {
@@ -154,10 +142,13 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             ob_start();
 ?>
 /*
-Theme Name:     {theme_name}
-Theme URI:      {theme_uri}
-Template:       {template}
-Version:        {version}
+Theme Name:     <?php echo $this->theme->get( 'Name' ) . ' Child'; ?>
+
+Theme URI:      <?php echo $this->theme->get( 'ThemeURI' ); ?>
+
+Template:       <?php echo $this->theme->get_stylesheet(); ?>
+
+Version:        1.0
 */
 <?php
             return ob_get_clean();

@@ -142,12 +142,9 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             ob_start();
 ?>
 /*
-Theme Name:     <?php echo $this->theme->get( 'Name' ) . ' Child'; ?>
-
-Theme URI:      <?php echo $this->theme->get( 'ThemeURI' ); ?>
-
-Template:       <?php echo $this->theme->get_stylesheet(); ?>
-
+Theme Name:     <?php echo $this->theme->get( 'Name' ) . ' Child' . PHP_EOL; ?>
+Theme URI:      <?php echo $this->theme->get( 'ThemeURI' ) . PHP_EOL; ?>
+Template:       <?php echo $this->theme->get_stylesheet() . PHP_EOL; ?>
 Version:        1.0
 */
 <?php

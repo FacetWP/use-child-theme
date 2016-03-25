@@ -15,7 +15,7 @@ _If a child theme isn't active..._
 If you're a theme developer, include `use-child-theme.php` in your theme, then add this code into functions.php:
 
 ```php
-include( 'use-child-theme.php' );
+include( dirname( __FILE__ ) . '/use-child-theme.php' );
 ```
 ### Changelog
 

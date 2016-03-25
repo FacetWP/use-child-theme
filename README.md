@@ -3,17 +3,26 @@ This drop-in creates a child theme if one doesn't exist, and notifies users to s
 
 <img src="http://i.imgur.com/dvLchUj.png" width="508" height="167" />
 
-## How it works
+### How it works
 
 _If a child theme isn't active..._
 * It creates a child theme if one doesn't exist already
 * It notifies users to activate the child theme (including a 1-click **Activate** button)
 * It copies the parent theme's settings to the child theme (if needed)
 
-## How to use it
+### How to use it
 
 If you're a theme developer, include `use-child-theme.php` in your theme, then add this code into functions.php:
 
 ```php
 include( 'use-child-theme.php' );
 ```
+### Changelog
+
+**0.2**
+* Create a child theme (if needed) only when user clicks "Activate"
+* Hide notice for 24 hours when dismissed
+* Support .gif and .jpeg screenshots
+
+**0.1**
+* Initial release

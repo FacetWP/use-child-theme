@@ -60,9 +60,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 });
 
                 $(document).on('click', '.uct-notice .notice-dismiss', function() {
-                    $.post(ajaxurl, {
-                        action: 'uct_dismiss'
-                    });
+                    $.post(ajaxurl, { action: 'uct_dismiss' });
                 });
             });
         })(jQuery);

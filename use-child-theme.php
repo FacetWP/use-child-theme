@@ -2,7 +2,7 @@
 /*
  * Use Child Theme
  * A drop-in to make it easy to use WordPress child themes
- * @version 0.2
+ * @version 0.3
  */
 
 defined( 'ABSPATH' ) or exit;

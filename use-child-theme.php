@@ -118,7 +118,8 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
 
         function create_child_theme() {
-            $dir = $this->theme->get_stylesheet_directory() . '-child';
+            $parent_dir = $this->theme->get_stylesheet_directory();
+            $child_dir = $parent_dir . '-child';
 
             $replacements = array(
                 'theme_name' => $this->theme->get( 'Name' ) . ' Child',
@@ -132,14 +133,12 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 $css = str_replace( '{' . $key . '}', $str, $css );
             }
 
-            if ( wp_mkdir_p( $dir ) ) {
-                file_put_contents( $dir . '/style.css', $css );
-                file_put_contents( $dir . '/functions.php', $this->functions_php() );
+            if ( wp_mkdir_p( $child_dir ) ) {
+                file_put_contents( $child_dir . '/style.css', $css );
+                file_put_contents( $child_dir . '/functions.php', $this->functions_php() );
 
                 if ( false !== ( $img = $this->theme->get_screenshot( 'relative' ) ) ) {
-                    copy( $this->theme->get_stylesheet_directory() . '/' . $img,
-                        $dir . '/' . $img
-                    ); 
+                    copy( "$parent_dir/$img", "$child_dir/$img" );
                 }
             }
             else {

@@ -82,6 +82,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
         function has_child_theme() {
             $themes = wp_get_themes();
             $folder_name = $this->theme->get_stylesheet();
+            $this->child_slug = $folder_name . '-child';
 
             foreach ( $themes as $theme ) {
                 if ( $folder_name == $theme->get( 'Template' ) ) {
@@ -100,7 +101,6 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             // Create child theme
             if ( ! $this->has_child_theme() ) {
                 $this->create_child_theme();
-                $this->child_slug = $parent_slug . '-child';
             }
 
             switch_theme( $this->child_slug );

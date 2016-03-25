@@ -97,7 +97,6 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
 
         function activate_child_theme() {
-
             $parent_slug = $this->theme->get_stylesheet();
 
             // Create child theme

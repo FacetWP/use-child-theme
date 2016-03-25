@@ -19,6 +19,9 @@ include( 'use-child-theme.php' );
 ```
 ### Changelog
 
+**0.3**
+* Code cleanup
+
 **0.2**
 * Create a child theme (if needed) only when user clicks "Activate"
 * Hide notice for 24 hours when dismissed

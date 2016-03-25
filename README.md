@@ -18,7 +18,7 @@ If you're a theme developer, include `use-child-theme.php` in your theme, then a
 include( dirname( __FILE__ ) . '/use-child-theme.php' );
 ```
 
-<a href="https://vimeo.com/160399404" target="_blank">See installation video (38 seconds)</a>
+<a href="https://vimeo.com/160399404" target="_blank">See installation video (26 seconds)</a>
 
 ### Changelog
 

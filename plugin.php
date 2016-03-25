@@ -3,10 +3,10 @@
 Plugin Name: Use Child Theme
 Plugin URI: https://facetwp.com/
 Description: Encourage use of child themes
-Version: 0.1
+Version: 1.0
 Author: Matt Gibbs
 
-Copyright 2016 Matt Gibbs
+Copyright 2016 FacetWP, LLC
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

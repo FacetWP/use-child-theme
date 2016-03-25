@@ -13,8 +13,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
     {
 
         public $theme;
-        public $child_theme;
-        public $show_notice = false;
+        public $child_slug;
 
 
         function __construct() {
@@ -22,9 +21,6 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
         }
 
 
-        /**
-         * Get the wheels turning
-         */
         function admin_init() {
 
             // Exit if unauthorized
@@ -32,8 +28,10 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 return;
             }
 
-            add_action( 'admin_notices', array( $this, 'admin_notices' ) );
-            add_action( 'wp_ajax_uct_activate', array( $this, 'activate_child_theme' ) );
+            // Exit if dismissed
+            if ( false !== get_transient( 'uct_dismiss_notice' ) ) {
+                return;
+            }
 
             $this->theme = wp_get_theme();
 
@@ -41,22 +39,14 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             if ( false !== $this->theme->parent() ) {
                 return;
             }
-            // Does child theme exist?
-            elseif ( $this->has_child_theme() ) {
-                $this->show_notice = true;
-            }
-            // Create child theme
-            else {
-                $this->install_child_theme();
-            }
+
+            add_action( 'wp_ajax_uct_activate', array( $this, 'activate_child_theme' ) );
+            add_action( 'wp_ajax_uct_dismiss', array( $this, 'dismiss_notice' ) );
+            add_action( 'admin_notices', array( $this, 'admin_notices' ) );
         }
 
 
-        /**
-         * Show admin notices
-         */
         function admin_notices() {
-            if ( $this->show_notice ) {
 ?>
         <script>
         (function($) {
@@ -65,31 +55,39 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                     $.post(ajaxurl, {
                         action: 'uct_activate'
                     }, function(response) {
-                        $('.uct-activate').closest('p').html(response);
+                        $('.uct-notice p').html(response);
+                    });
+                });
+
+                $(document).on('click', '.uct-notice .notice-dismiss', function() {
+                    $.post(ajaxurl, {
+                        action: 'uct_dismiss'
                     });
                 });
             });
         })(jQuery);
         </script>
 
-        <div class="notice notice-error is-dismissible">
+        <div class="notice notice-error uct-notice is-dismissible">
             <p>Please use the <?php echo $this->theme->get( 'Name' ); ?> child theme <a class="uct-activate" href="javascript:;">Activate now &raquo;</a></p>
         </div>
 <?php
-            }
         }
 
 
-        /**
-         * Does this theme have a child?
-         */
+        function dismiss_notice() {
+            set_transient( 'uct_dismiss_notice', 'yes', 86400 );
+            exit;
+        }
+
+
         function has_child_theme() {
             $themes = wp_get_themes();
-            $folder_name = basename( $this->theme->get_stylesheet_directory() );
+            $folder_name = $this->theme->get_stylesheet();
 
             foreach ( $themes as $theme ) {
                 if ( $folder_name == $theme->get( 'Template' ) ) {
-                    $this->child_theme = $theme;
+                    $this->child_slug = $theme->get_stylesheet();
                     return true;
                 }
             }
@@ -98,35 +96,37 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
         }
 
 
-        /**
-         * Activate child theme
-         */
         function activate_child_theme() {
-            $child_slug = basename( $this->child_theme->get_stylesheet_directory() );
-            switch_theme( $child_slug );
+
+            $parent_slug = $this->theme->get_stylesheet();
+
+            // Create child theme
+            if ( ! $this->has_child_theme() ) {
+                $this->create_child_theme();
+                $this->child_slug = $parent_slug . '-child';
+            }
+
+            switch_theme( $this->child_slug );
 
             // Copy customizer settings, widgets, etc.
-            $settings = get_option( 'theme_mods_' . $child_slug );
+            $settings = get_option( 'theme_mods_' . $this->child_slug );
+
             if ( false === $settings ) {
-                $parent_slug = basename( $this->theme->get_stylesheet_directory() );
                 $parent_settings = get_option( 'theme_mods_' . $parent_slug );
-                update_option( 'theme_mods_' . $child_slug, $parent_settings );
+                update_option( 'theme_mods_' . $this->child_slug, $parent_settings );
             }
 
             wp_die( 'All done!' );
         }
 
 
-        /**
-         * Create child theme
-         */
-        function install_child_theme() {
+        function create_child_theme() {
             $dir = $this->theme->get_stylesheet_directory() . '-child';
 
             $replacements = array(
                 'theme_name' => $this->theme->get( 'Name' ) . ' Child',
                 'theme_uri' => $this->theme->get( 'ThemeURI' ),
-                'template' => basename( $this->theme->get_stylesheet_directory() ),
+                'template' => $this->theme->get_stylesheet(),
                 'version' => '1.0',
             );
 
@@ -139,11 +139,14 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 file_put_contents( $dir . '/style.css', $css );
                 file_put_contents( $dir . '/functions.php', $this->functions_php() );
 
-                if ( is_readable( $this->theme->get_stylesheet_directory() . '/screenshot.png' ) ) {
-                    copy( $this->theme->get_stylesheet_directory() . '/screenshot.png',
-                        $dir . '/screenshot.png'
-                    );
+                if ( false !== ( $img = $this->theme->get_screenshot( 'relative' ) ) ) {
+                    copy( $this->theme->get_stylesheet_directory() . '/' . $img,
+                        $dir . '/' . $img
+                    ); 
                 }
+            }
+            else {
+                wp_die( 'Error: theme folder not writable' );
             }
         }
 

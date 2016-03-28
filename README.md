@@ -3,14 +3,18 @@ This PHP class automatically creates a child theme if needed.
 
 <img src="http://i.imgur.com/dvLchUj.png" width="508" height="167" />
 
+### What problem does this solve?
+If you make changes to a theme, those changes will be lost when the theme is updated.
+With child themes, your modifications are kept separate, so your parent themes are update-safe.
+
 ### How it works
 
-_If a child theme isn't active..._
-* A child theme is created (if needed)
-* A WP notice allows for 1-click child theme activation
-* The parent theme's settings are copied to the child theme
+* If a child theme is not active, the user will see a WP notice with an "Activate now" link
+* When clicked, a child theme is created (if needed) and enabled
 
-### How to use it
+### Setup
+
+<a href="https://vimeo.com/160399404" target="_blank">Watch screencast (27 seconds)</a>
 
 If you're a theme developer, include `use-child-theme.php` in your theme, then add this code into functions.php:
 
@@ -18,9 +22,10 @@ If you're a theme developer, include `use-child-theme.php` in your theme, then a
 include( dirname( __FILE__ ) . '/use-child-theme.php' );
 ```
 
-<a href="https://vimeo.com/160399404" target="_blank">See installation video (26 seconds)</a>
-
 ### Changelog
+
+**0.4**
+* Added `uct_dismiss_timeout` filter
 
 **0.3**
 * Code cleanup

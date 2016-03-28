@@ -1,5 +1,4 @@
-# use-child-theme.php
-Add child theme support to any WordPress theme
+**Use Child Theme**: Add child theme support to any WordPress theme
 
 <img src="http://i.imgur.com/dvLchUj.png" width="508" height="167" />
 

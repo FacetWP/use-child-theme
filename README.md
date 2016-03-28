@@ -1,11 +1,11 @@
 # use-child-theme.php
-This PHP class automatically creates a child theme if needed.
+Add child theme support to any WordPress theme
 
 <img src="http://i.imgur.com/dvLchUj.png" width="508" height="167" />
 
 ### What problem does this solve?
 If you make changes to a theme, those changes will be lost when the theme is updated.
-With child themes, your modifications are kept separate, so your parent themes are update-safe.
+With a child theme, your changes are kept separate, so the parent theme can be safely updated.
 
 ### How it works
 

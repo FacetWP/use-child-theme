@@ -1,6 +1,6 @@
 **Use Child Theme**: Add child theme support to any WordPress theme
 
-<img src="http://i.imgur.com/dvLchUj.png" width="508" height="167" />
+<img src="http://i.imgur.com/XqYZcTA.png" width="680" height="349" />
 
 ### What problem does this solve?
 If you make changes to a theme, those changes will be lost when the theme is updated.
@@ -8,7 +8,7 @@ With a child theme, your changes are kept separate, so the parent theme can be s
 
 ### How it works
 
-* If a child theme is not active, the user will see a WP notice with an "Activate now" link
+* If a child theme is not active, the user will see a WP notice with an "Activate now" link **while on the Theme Editor screen**
 * When clicked, a child theme is created (if needed) and enabled
 
 ### Setup

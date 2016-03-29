@@ -38,6 +38,11 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 return;
             }
 
+            // Exit if no direct access
+            if ( 'direct' != get_filesystem_method() ) {
+                return;
+            }
+
             add_action( 'wp_ajax_uct_activate', array( $this, 'activate_child_theme' ) );
             add_action( 'wp_ajax_uct_dismiss', array( $this, 'dismiss_notice' ) );
             add_action( 'admin_notices', array( $this, 'admin_notices' ) );
@@ -62,7 +67,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
         })(jQuery);
         </script>
 
-        <div class="notice notice-error uct-notice is-dismissible">
+        <div class="notice notice-warning uct-notice is-dismissible">
             <p>Please use the <?php echo $this->theme->get( 'Name' ); ?> child theme <a class="uct-activate" href="javascript:;">Activate now &raquo;</a></p>
         </div>
 <?php
@@ -70,7 +75,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
 
         function dismiss_notice() {
-            set_transient( 'uct_dismiss_notice', 'yes', apply_filters( 'uct_dismiss_timeout', 86400 ) );
+            set_transient( 'uct_dismiss_notice', 'yes', apply_filters( 'uct_dismiss_timeout', 604800 ) );
             exit;
         }
 
@@ -118,11 +123,15 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             $child_dir = $parent_dir . '-child';
 
             if ( wp_mkdir_p( $child_dir ) ) {
-                file_put_contents( $child_dir . '/style.css', $this->style_css() );
-                file_put_contents( $child_dir . '/functions.php', $this->functions_php() );
+                $creds = request_filesystem_credentials( admin_url() );
+                WP_Filesystem( $creds ); // we already have direct access
+
+                global $wp_filesystem;
+                $wp_filesystem->put_contents( $child_dir . '/style.css', $this->style_css() );
+                $wp_filesystem->put_contents( $child_dir . '/functions.php', $this->functions_php() );
 
                 if ( false !== ( $img = $this->theme->get_screenshot( 'relative' ) ) ) {
-                    copy( "$parent_dir/$img", "$child_dir/$img" );
+                    $wp_filesystem->copy( "$parent_dir/$img", "$child_dir/$img" );
                 }
             }
             else {

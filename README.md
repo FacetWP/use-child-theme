@@ -8,7 +8,7 @@ With a child theme, your changes are kept separate, so the parent theme can be s
 
 ### How it works
 
-* If a child theme is not active, the user will see a WP notice with an "Activate now" link **while on the Theme Editor screen**
+* If a child theme is not active, the user will see a WP notice with an "Activate" link **on the Theme Editor screen**
 * When clicked, a child theme is created (if needed) and enabled
 
 ### Setup

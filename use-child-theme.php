@@ -50,6 +50,12 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
 
         function admin_notices() {
+
+            // Show only on Appearance > Editor
+            $screen = get_current_screen();
+            if ( ! isset( $screen->id ) || 'theme-editor' != $screen->id ) {
+                return;
+            }
 ?>
         <script>
         (function($) {
@@ -67,15 +73,15 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
         })(jQuery);
         </script>
 
-        <div class="notice notice-warning uct-notice is-dismissible">
-            <p>Please use the <?php echo $this->theme->get( 'Name' ); ?> child theme <a class="uct-activate" href="javascript:;">Activate now &raquo;</a></p>
+        <div class="notice notice-error uct-notice is-dismissible">
+            <p>Please use a <?php echo $this->theme->get( 'Name' ); ?> child theme to make changes <a class="uct-activate" href="javascript:;">Activate now &raquo;</a></p>
         </div>
 <?php
         }
 
 
         function dismiss_notice() {
-            set_transient( 'uct_dismiss_notice', 'yes', apply_filters( 'uct_dismiss_timeout', 604800 ) );
+            set_transient( 'uct_dismiss_notice', 'yes', apply_filters( 'uct_dismiss_timeout', 86400 ) );
             exit;
         }
 

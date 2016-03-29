@@ -18,7 +18,7 @@ With a child theme, your changes are kept separate, so the parent theme can be s
 If you're a theme developer, include `use-child-theme.php` in your theme, then add this code into functions.php:
 
 ```php
-include( dirname( __FILE__ ) . '/use-child-theme.php' );
+require_once( trailingslashit( get_template_directory() ) . 'use-child-theme.php' );
 ```
 
 ### Changelog

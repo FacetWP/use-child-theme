@@ -5,6 +5,8 @@
  * @version 0.4
  */
 
+defined( 'ABSPATH' ) or exit;
+
 if ( ! class_exists( 'Use_Child_Theme' ) ) {
 
     class Use_Child_Theme
@@ -74,7 +76,10 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
         </script>
 
         <div class="notice notice-error uct-notice is-dismissible">
-            <p>Please use a <?php echo $this->theme->get( 'Name' ); ?> child theme to make changes <a class="uct-activate" href="javascript:;">Activate now &raquo;</a></p>
+            <p>
+                <?php printf( esc_html__( 'Please use a %s child theme to make changes', 'use-child-theme' ), $this->theme->get( 'Name' ) ); ?>
+                <a class="uct-activate" href="javascript:;"><?php esc_html_e( 'Activate now', 'use-child-theme' ); ?></a>
+            </p>
         </div>
 <?php
         }
@@ -120,7 +125,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 update_option( 'theme_mods_' . $this->child_slug, $parent_settings );
             }
 
-            wp_die( 'All done!' );
+            wp_die( esc_html__( 'All done!', 'use-child-theme' ) );
         }
 
 
@@ -141,36 +146,35 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
                 }
             }
             else {
-                wp_die( 'Error: theme folder not writable' );
+                wp_die( esc_html__( 'Error: theme folder not writable', 'use-child-theme' ) );
             }
         }
 
 
         function style_css() {
-            ob_start();
-?>
+            $name = $this->theme->get( 'Name' ) . ' Child';
+            $uri = $this->theme->get( 'ThemeURI' );
+            $parent = $this->theme->get_stylesheet();
+
+            return "<?php
 /*
-Theme Name:     <?php echo $this->theme->get( 'Name' ) . ' Child' . PHP_EOL; ?>
-Theme URI:      <?php echo $this->theme->get( 'ThemeURI' ) . PHP_EOL; ?>
-Template:       <?php echo $this->theme->get_stylesheet() . PHP_EOL; ?>
-Version:        1.0
+Theme Name:     {$name}
+Theme URI:      {$uri}
+Template:       {$parent}
+Version:        0.1
 */
-<?php
-            return ob_get_clean();
+";
         }
 
 
         function functions_php() {
-            ob_start();
-?>
-<?php echo '<'; ?>?php
+            return "<?php
 
 function child_enqueue_styles() {
     wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
 }
 add_action( 'wp_enqueue_scripts', 'child_enqueue_styles' );
-<?php
-            return ob_get_clean();
+";
         }
     }
 

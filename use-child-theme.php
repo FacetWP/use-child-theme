@@ -7,7 +7,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( 'Use_Child_Theme' ) ) {
+if ( ! class_exists( 'Use_Child_Theme' ) && is_admin() ) {
 
     class Use_Child_Theme
     {

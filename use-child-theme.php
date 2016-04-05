@@ -156,25 +156,23 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
             $uri = $this->theme->get( 'ThemeURI' );
             $parent = $this->theme->get_stylesheet();
 
-            return "<?php
-/*
-Theme Name:     {$name}
-Theme URI:      {$uri}
-Template:       {$parent}
-Version:        0.1
+            return apply_filters( 'uct_style_css', "/*
+Theme Name:  {$name}
+Theme URI:   {$uri}
+Template:    {$parent}
+Version:     1.0
 */
-";
+", $name, $uri, $parent );
         }
 
 
         function functions_php() {
-            return "<?php
-
+            return "<?php\r\n\r\n" . apply_filters( 'uct_functions_php', "
 function child_enqueue_styles() {
     wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
 }
 add_action( 'wp_enqueue_scripts', 'child_enqueue_styles' );
-";
+" );
         }
     }
 

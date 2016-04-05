@@ -54,9 +54,9 @@ if ( ! class_exists( 'Use_Child_Theme' ) ) {
         function admin_notices() {
 
             // Show only on specific admin page(s) (default: Appearance > Editor)
-            $admin_screen_ids = apply_filters( 'uct_admin_screen_ids', array( 'theme-editor' ) );
+            $admin_notices_screen_id = apply_filters( 'uct_admin_notices_screen_id', array( 'theme-editor' ) );
             $screen = get_current_screen();
-            if ( ! isset( $screen->id ) || ! in_array( $screen->id, (array) $admin_screen_ids ) ) {
+            if ( ! isset( $screen->id ) || ! in_array( $screen->id, (array) $admin_notices_screen_id ) ) {
                 return;
             }
 ?>

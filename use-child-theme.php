@@ -156,26 +156,26 @@ if ( ! class_exists( 'Use_Child_Theme' ) && is_admin() ) {
             $name = $this->theme->get( 'Name' ) . ' Child';
             $uri = $this->theme->get( 'ThemeURI' );
             $parent = $this->theme->get_stylesheet();
-
-            return "<?php
-/*
+            $output = "/*
 Theme Name:     {$name}
 Theme URI:      {$uri}
 Template:       {$parent}
-Version:        0.1
+Version:        1.0
 */
 ";
+            return apply_filters( 'uct_style_css', $output );
         }
 
 
         function functions_php() {
-            return "<?php
+            $output = "<?php
 
 function child_enqueue_styles() {
     wp_enqueue_style( 'parent-style', get_template_directory_uri() . '/style.css' );
 }
 add_action( 'wp_enqueue_scripts', 'child_enqueue_styles' );
 ";
+            return apply_filters( 'uct_functions_php', $output );
         }
     }
 

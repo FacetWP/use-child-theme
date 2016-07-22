@@ -13,8 +13,6 @@ With a child theme, your changes are kept separate, so the parent theme can be s
 
 ### Setup
 
-<a href="https://vimeo.com/160399404" target="_blank">Watch screencast (27 seconds)</a>
-
 If you're a theme developer, include `use-child-theme.php` in your theme, then add this code into functions.php:
 
 ```php

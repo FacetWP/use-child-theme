@@ -126,7 +126,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) && is_admin() ) {
                 update_option( 'theme_mods_' . $this->child_slug, $parent_settings );
             }
 
-            wp_die( esc_html__( 'All done!', 'YOUR_THEME_SLUG' ) );
+            wp_die( esc_html__( 'All done! You are using a child theme now!', 'YOUR_THEME_SLUG' ) );
         }
 
 

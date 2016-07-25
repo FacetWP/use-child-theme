@@ -78,8 +78,8 @@ if ( ! class_exists( 'Use_Child_Theme' ) && is_admin() ) {
 
         <div class="notice notice-error uct-notice is-dismissible">
             <p>
-                <?php printf( esc_html__( 'Please use a %s child theme to make changes', 'use-child-theme' ), $this->theme->get( 'Name' ) ); ?>
-                <a class="uct-activate" href="javascript:;"><?php esc_html_e( 'Activate now', 'use-child-theme' ); ?></a>
+                <?php printf( esc_html__( 'Please use a %s child theme to make changes', 'YOUR_THEME_SLUG' ), $this->theme->get( 'Name' ) ); ?>
+                <a class="uct-activate" href="javascript:;"><?php esc_html_e( 'Activate now', 'YOUR_THEME_SLUG' ); ?></a>
             </p>
         </div>
 <?php
@@ -126,7 +126,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) && is_admin() ) {
                 update_option( 'theme_mods_' . $this->child_slug, $parent_settings );
             }
 
-            wp_die( esc_html__( 'All done!', 'use-child-theme' ) );
+            wp_die( esc_html__( 'All done!', 'YOUR_THEME_SLUG' ) );
         }
 
 
@@ -147,7 +147,7 @@ if ( ! class_exists( 'Use_Child_Theme' ) && is_admin() ) {
                 }
             }
             else {
-                wp_die( esc_html__( 'Error: theme folder not writable', 'use-child-theme' ) );
+                wp_die( esc_html__( 'Error: theme folder not writable', 'YOUR_THEME_SLUG' ) );
             }
         }
 

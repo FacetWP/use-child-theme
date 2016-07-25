@@ -2,6 +2,11 @@
 /*
  * Use Child Theme
  * A drop-in to make it easy to use WordPress child themes
+ *
+ * Important:
+ * Don't forget to change `YOUR_THEME_SLUG` text domain to match
+ * your (parent) theme folder name.
+ *
  * @version 0.4
  */
 

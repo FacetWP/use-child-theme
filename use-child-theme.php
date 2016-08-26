@@ -116,8 +116,6 @@ if ( ! class_exists( 'Use_Child_Theme' ) && is_admin() ) {
                 $this->create_child_theme();
             }
 
-            switch_theme( $this->child_slug );
-
             // Copy customizer settings, widgets, etc.
             $settings = get_option( 'theme_mods_' . $this->child_slug );
 
@@ -125,6 +123,8 @@ if ( ! class_exists( 'Use_Child_Theme' ) && is_admin() ) {
                 $parent_settings = get_option( 'theme_mods_' . $parent_slug );
                 update_option( 'theme_mods_' . $this->child_slug, $parent_settings );
             }
+
+            switch_theme( $this->child_slug );
 
             wp_die( esc_html__( 'All done!', 'use-child-theme' ) );
         }
